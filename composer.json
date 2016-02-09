@@ -1,0 +1,24 @@
+{
+    "name": "craigjbass/packagist-number",
+    "description": "Akin to bacon number, finds the shortest path through packages between two contributors",
+    "require-dev": {
+        "phpunit/phpunit": "^5.2"
+    },
+    "authors": [
+        {
+            "name": "Craig Bass",
+            "email": "craig@devls.co.uk"
+        }
+    ],
+    "require": {},
+    "autoload": {
+        "psr-4": {
+            "Craigjbass\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Craigjbass\\": "tests/"
+        }
+    }
+}
