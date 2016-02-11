@@ -1,7 +1,11 @@
 {
     "name": "craigjbass/packagist-number",
     "description": "Akin to bacon number, finds the shortest path through packages between two contributors",
+    "require": {
+        "php": ">=7",
+    },
     "require-dev": {
+        "behat/behat": "^3.0",
         "phpunit/phpunit": "^5.2"
     },
     "authors": [
@@ -10,15 +14,15 @@
             "email": "craig@devls.co.uk"
         }
     ],
-    "require": {},
     "autoload": {
         "psr-4": {
-            "Craigjbass\\": "src/"
+            "Craigjbass\\PackagistNumber\\": "src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Craigjbass\\": "tests/"
+            "Craigjbass\\PackagistNumber\\": "tests/",
+            "Craigjbass\\PackagistNumber\\Behat": "spec/Context"
         }
     }
 }
