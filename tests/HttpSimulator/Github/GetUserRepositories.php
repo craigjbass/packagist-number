@@ -14,7 +14,8 @@ class GetUserRepositories
 
     public function execute()
     {
-        $json = /** @lang JSON */
+        $json
+            = /** @lang JSON */
             <<<JSON
 [
    {

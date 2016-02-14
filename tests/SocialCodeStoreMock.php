@@ -11,22 +11,23 @@ namespace Craigjbass\PackagistNumber;
 
 use Craigjbass\PackagistNumber\Gateway\SocialCodeStore;
 
-class SocialCodeStoreMock implements SocialCodeStore {
+class SocialCodeStoreMock implements SocialCodeStore
+{
 
-    private $userRepo = [];
+    private $userRepo = [ ];
 
-    public function addUserRepo(string $contributor, string $repository)
+    public function addUserRepo( string $contributor, string $repository )
     {
-        if( !isset( $this->userRepo[$contributor] ) ) {
-            $this->userRepo[$contributor] = [];
+        if ( !isset($this->userRepo[$contributor]) ) {
+            $this->userRepo[$contributor] = [ ];
         }
         $this->userRepo[$contributor][] = new Repository( $repository );
     }
 
-    public function getRepositoriesContributedTo(string $contributor): array
+    public function getRepositoriesContributedTo( string $contributor ): array
     {
-        if (!isset($this->userRepo[$contributor])) {
-            return [];
+        if ( !isset($this->userRepo[$contributor]) ) {
+            return [ ];
         }
 
         return $this->userRepo[$contributor];

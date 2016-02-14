@@ -12,5 +12,6 @@ namespace Craigjbass\PackagistNumber\UseCase\GetPackagistNumber;
 interface Request
 {
     public function getStartingContributor(): string;
+
     public function getEndingContributor(): string;
 }

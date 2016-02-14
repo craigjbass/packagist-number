@@ -11,5 +11,5 @@ namespace Craigjbass\PackagistNumber\Gateway;
 
 interface SocialCodeStore
 {
-    public function getRepositoriesContributedTo(string $contributor): array;
+    public function getRepositoriesContributedTo( string $contributor ): array;
 }

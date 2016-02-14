@@ -9,9 +9,7 @@ use Craigjbass\PackagistNumber\UseCase\GetPackagistNumber\Response;
 
 class GetPackagistNumber
 {
-    /**
-     * @var SocialCodeStore
-     */
+    /** @var SocialCodeStore */
     private $socialCodeStore;
 
     public function __construct( SocialCodeStore $socialCodeStore )
@@ -23,12 +21,10 @@ class GetPackagistNumber
     {
         $repositories = $this->socialCodeStore->getRepositoriesContributedTo( $request->getStartingContributor() );
 
-
         $packagistNumber = null;
-        if( count( $repositories ) ) {
+        if ( count( $repositories ) ) {
             $packagistNumber = 1;
         }
-
 
         return new GetPackagistNumber\Response( $packagistNumber );
     }

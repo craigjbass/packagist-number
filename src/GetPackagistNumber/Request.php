@@ -16,10 +16,10 @@ class Request implements \Craigjbass\PackagistNumber\UseCase\GetPackagistNumber\
     /** @var string */
     private $endingContributor;
 
-    public function __construct($startingContributor, $endingContributor)
+    public function __construct( $startingContributor, $endingContributor )
     {
         $this->startingContributor = $startingContributor;
-        $this->endingContributor = $endingContributor;
+        $this->endingContributor   = $endingContributor;
     }
 
     public function getStartingContributor(): string

@@ -9,13 +9,14 @@
 namespace Craigjbass\PackagistNumber\GetPackagistNumber;
 
 
-class Response implements \Craigjbass\PackagistNumber\UseCase\GetPackagistNumber\Response {
+class Response implements \Craigjbass\PackagistNumber\UseCase\GetPackagistNumber\Response
+{
     /**
      * @var
      */
     private $packagistNumber;
 
-    public function __construct($packagistNumber )
+    public function __construct( $packagistNumber )
     {
         $this->packagistNumber = $packagistNumber;
     }
@@ -24,7 +25,7 @@ class Response implements \Craigjbass\PackagistNumber\UseCase\GetPackagistNumber
     /** @return Link[] */
     public function getLinks(): array
     {
-        return [];
+        return [ ];
     }
 
     /** @return int */

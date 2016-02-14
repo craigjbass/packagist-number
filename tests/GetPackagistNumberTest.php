@@ -15,34 +15,34 @@ class GetPackagistNumberTest extends \PHPUnit_Framework_TestCase
      * @param $expected
      * @param $response
      */
-    private function assertLinksIsEqualTo($expected, Response $response)
+    private function assertLinksIsEqualTo( $expected, Response $response )
     {
-        $this->assertEquals($expected, $response->getLinks());
+        $this->assertEquals( $expected, $response->getLinks() );
     }
 
     /**
      * @param $response
      */
-    private function assertNoRelationshipFoundError( Response $response)
+    private function assertNoRelationshipFoundError( Response $response )
     {
-        $this->assertTrue($response->hasNoRelationship());
+        $this->assertTrue( $response->hasNoRelationship() );
     }
 
     /**
      * @param $response
      */
-    private function assertPackagistNumberIsNull( Response $response)
+    private function assertPackagistNumberIsNull( Response $response )
     {
-        $this->assertNull($response->getPackagistNumber());
+        $this->assertNull( $response->getPackagistNumber() );
     }
 
     /**
      * @param $expected
      * @param $response
      */
-    private function assertPackagistNumberIsEqualTo($expected, Response $response)
+    private function assertPackagistNumberIsEqualTo( $expected, Response $response )
     {
-        $this->assertEquals($expected, $response->getPackagistNumber());
+        $this->assertEquals( $expected, $response->getPackagistNumber() );
     }
 
     protected function setUp()
@@ -56,8 +56,8 @@ class GetPackagistNumberTest extends \PHPUnit_Framework_TestCase
      */
     private function execute( $starting, $ending )
     {
-        return (new GetPackagistNumber( $this->codeStore ))
-            ->execute(new GetPackagistNumber\Request( $starting, $ending ));
+        return ( new GetPackagistNumber( $this->codeStore ) )
+            ->execute( new GetPackagistNumber\Request( $starting, $ending ) );
     }
 
     /**
@@ -67,7 +67,7 @@ class GetPackagistNumberTest extends \PHPUnit_Framework_TestCase
     {
         $response = $this->execute( 'user1', 'user2' );
 
-        $this->assertLinksIsEqualTo([], $response);
+        $this->assertLinksIsEqualTo( [ ], $response );
     }
 
     /**
@@ -77,7 +77,7 @@ class GetPackagistNumberTest extends \PHPUnit_Framework_TestCase
     {
         $response = $this->execute( 'user1', 'user2' );
 
-        $this->assertPackagistNumberIsNull($response);
+        $this->assertPackagistNumberIsNull( $response );
     }
 
     /**
@@ -87,7 +87,7 @@ class GetPackagistNumberTest extends \PHPUnit_Framework_TestCase
     {
         $response = $this->execute( 'user1', 'user2' );
 
-        $this->assertNoRelationshipFoundError($response);
+        $this->assertNoRelationshipFoundError( $response );
     }
 
     /**
@@ -100,7 +100,7 @@ class GetPackagistNumberTest extends \PHPUnit_Framework_TestCase
 
         $response = $this->execute( 'user1', 'user2' );
 
-        $this->assertPackagistNumberIsEqualTo(1, $response);
+        $this->assertPackagistNumberIsEqualTo( 1, $response );
     }
 
 }
