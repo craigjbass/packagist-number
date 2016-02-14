@@ -3,6 +3,8 @@
     "description": "Akin to bacon number, finds the shortest path through packages between two contributors",
     "require": {
         "php": ">=7",
+        "php-di/php-di": "^5.2",
+        "clearbooks/dilex": "^1.0"
     },
     "require-dev": {
         "behat/behat": "^3.0",
@@ -22,7 +24,7 @@
     "autoload-dev": {
         "psr-4": {
             "Craigjbass\\PackagistNumber\\": "tests/",
-            "Craigjbass\\PackagistNumber\\Behat": "spec/Context"
+            "Craigjbass\\PackagistNumber\\Behat\\": "spec/Context"
         }
     }
 }

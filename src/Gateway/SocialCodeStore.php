@@ -9,7 +9,19 @@
 namespace Craigjbass\PackagistNumber\Gateway;
 
 
+use Craigjbass\PackagistNumber\Repository;
+
 interface SocialCodeStore
 {
+    /**
+     * @param string $contributor
+     * @return Repository[]
+     */
     public function getRepositoriesContributedTo( string $contributor ): array;
+
+    /**
+     * @param string $repository
+     * @return string[]
+     */
+    public function getContributors( string $repository ): array;
 }

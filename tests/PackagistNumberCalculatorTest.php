@@ -6,10 +6,13 @@ use Craigjbass\PackagistNumber\Gateway\SocialCodeStore;
 use Craigjbass\PackagistNumber\UseCase\GetPackagistNumber\Request;
 use Craigjbass\PackagistNumber\UseCase\GetPackagistNumber\Response;
 
-class GetPackagistNumberTest extends \PHPUnit_Framework_TestCase
+class PackagistNumberCalculatorTest extends \PHPUnit_Framework_TestCase
 {
     /** @var SocialCodeStoreMock */
     private $codeStore;
+
+    /** @var PackageManagerStoreMock */
+    private $packages;
 
     /**
      * @param $expected
@@ -49,6 +52,7 @@ class GetPackagistNumberTest extends \PHPUnit_Framework_TestCase
     {
         parent::setUp();
         $this->codeStore = new SocialCodeStoreMock();
+        $this->packages  = new PackageManagerStoreMock();
     }
 
     /**
@@ -56,7 +60,7 @@ class GetPackagistNumberTest extends \PHPUnit_Framework_TestCase
      */
     private function execute( $starting, $ending )
     {
-        return ( new GetPackagistNumber( $this->codeStore ) )
+        return ( new PackagistNumberCalculator( $this->codeStore, $this->packages ) )
             ->execute( new GetPackagistNumber\Request( $starting, $ending ) );
     }
 
@@ -93,8 +97,10 @@ class GetPackagistNumberTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function GivenContributorsAreLinkedByOneRepository_ThenExpectPackagistNumberOf1()
+    public function GivenContributorsAreLinkedByOneRepository_AndIsAValidPackage_ThenExpectPackagistNumberOf1()
     {
+        $this->packages->addPackage( 'org1/test' );
+
         $this->codeStore->addUserRepo( 'user1', 'org1/test' );
         $this->codeStore->addUserRepo( 'user2', 'org1/test' );
 
@@ -102,5 +108,36 @@ class GetPackagistNumberTest extends \PHPUnit_Framework_TestCase
 
         $this->assertPackagistNumberIsEqualTo( 1, $response );
     }
+
+    /**
+     * @test
+     */
+    public function GivenContributorsAreNotLinkedByOneRepository_AndIsAValidPackage_ThenExpectNoRelationshipFoundError()
+    {
+        $this->packages->addPackage( 'org1/test' );
+
+        $this->codeStore->addUserRepo( 'user1', 'org1/test' );
+
+        $response = $this->execute( 'user1', 'user2' );
+
+        $this->assertNoRelationshipFoundError( $response );
+        $this->assertPackagistNumberIsNull( $response );
+    }
+
+
+    /**
+     * @test
+     */
+    public function GivenContributorsAreLinkedByOneRepository_AndNotAValidPackage_ThenExpectNoRelationshipFoundError()
+    {
+        $this->codeStore->addUserRepo( 'user1', 'org1/test' );
+        $this->codeStore->addUserRepo( 'user2', 'org1/test' );
+
+        $response = $this->execute( 'user1', 'user2' );
+
+        $this->assertNoRelationshipFoundError( $response );
+        $this->assertPackagistNumberIsNull( $response );
+    }
+
 
 }

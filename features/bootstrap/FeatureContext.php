@@ -3,6 +3,7 @@
 use Behat\Behat\Context\Context;
 use Behat\Behat\Context\SnippetAcceptingContext;
 use Behat\Gherkin\Node\TableNode;
+use Craigjbass\PackagistNumber\UseCase\GetPackagistNumber;
 
 /**
  * Defines application features from the specific context.
@@ -51,10 +52,14 @@ class FeatureContext implements Context, SnippetAcceptingContext
     }
 
     /**
-     * @When /^I find the packagist number between test\-contributor1 and test\-contributor2$/
+     * @When /^I find the packagist number between (.*) and (.*)$/
      */
-    public function iFindThePackagistNumberBetweenTestContributorandTestContributor($arg1, $arg2)
+    public function iFindThePackagistNumberBetweenTestContributorandTestContributor($start, $end)
     {
-        throw new \Behat\Behat\Tester\Exception\PendingException();
+        $injector = \Craigjbass\PackagistNumber\Injector::getInjector();
+        /** @var GetPackagistNumber $usecase */
+        $usecase = $injector->get( GetPackagistNumber::class );
+
+
     }
 }
