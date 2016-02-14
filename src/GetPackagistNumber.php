@@ -30,34 +30,6 @@ class GetPackagistNumber
         }
 
 
-        return new class( $packagistNumber ) implements Response {
-            /**
-             * @var
-             */
-            private $packagistNumber;
-
-            public function __construct($packagistNumber )
-            {
-                $this->packagistNumber = $packagistNumber;
-            }
-
-
-            /** @return Link[] */
-            public function getLinks(): array
-            {
-                return [];
-            }
-
-            /** @return int */
-            public function getPackagistNumber()
-            {
-                return $this->packagistNumber;
-            }
-
-            public function hasNoRelationship(): bool
-            {
-                return true;
-            }
-        };
+        return new GetPackagistNumber\Response( $packagistNumber );
     }
 }
