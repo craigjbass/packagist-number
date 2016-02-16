@@ -1,6 +1,8 @@
 Feature: Get packagist number
 
-  Scenario: Get packagist number for closely joined contributors
+  Scenario: Get packagist number for contributors joined by one repo
+      (this is effectively a rehash of "bacon number",
+       except with Packagist packages and GitHub contributors)
 
     Given there are contributors:
       | github repo  | github contributor |
