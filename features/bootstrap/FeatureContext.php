@@ -62,4 +62,12 @@ class FeatureContext implements Context, SnippetAcceptingContext
 
 
     }
+
+    /**
+     * @Given /^github contributors have pull requests to:$/
+     */
+    public function githubContributorsHavePullRequestsTo( TableNode $table )
+    {
+        
+    }
 }
