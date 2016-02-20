@@ -5,6 +5,18 @@
 * PHP 7
 * http://php.net/manual/en/features.commandline.webserver.php support in PHP install
 
+## Running
+
+### Behat
+```bash
+vendor/bin/behat
+```
+
+### PHPUnit
+```bash
+vendor/bin/phpunit
+```
+
 ## Task list
 - [x] Walking skeleton with edge-to-edge testing
     - [x] Simulator for testing GitHub gateway
