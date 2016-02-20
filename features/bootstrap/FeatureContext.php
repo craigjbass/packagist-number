@@ -3,6 +3,8 @@
 use Behat\Behat\Context\Context;
 use Behat\Behat\Context\SnippetAcceptingContext;
 use Behat\Gherkin\Node\TableNode;
+use Craigjbass\PackagistNumber\HttpSimulator\GitHubSimulator;
+use Craigjbass\PackagistNumber\HttpSimulator\Simulator;
 use Craigjbass\PackagistNumber\UseCase\GetPackagistNumber;
 
 /**
@@ -11,12 +13,51 @@ use Craigjbass\PackagistNumber\UseCase\GetPackagistNumber;
 class FeatureContext implements Context, SnippetAcceptingContext
 {
 
+    use Simulator;
+    use GitHubSimulator;
+
+    /**
+     * @BeforeScenario
+     */
+    public function beforeScenario()
+    {
+        $this->startSimulator();
+    }
+
+    /**
+     * @AfterScenario
+     */
+    public function afterScenario()
+    {
+        $this->endSimulator();
+    }
+
     /**
      * @Given /^there are contributors:$/
      */
     public function thereAreContributors(TableNode $table)
     {
+        $repos = [];
+        foreach( $table as $row ) {
+            $repos[$row['github repo']][] = $row['github contributor'];
+        }
+        foreach( $repos as $repoName => $contributors ) {
+            $this->setContributors( $repoName, $contributors );
+        }
+    }
 
+    /**
+     * @Given /^github contributors have pull requests to:$/
+     */
+    public function githubContributorsHavePullRequestsTo( TableNode $table )
+    {
+        $contributors = [];
+        foreach( $table as $row ) {
+            $contributors[$row['github contributor']][] = $row['github repo'];
+        }
+        foreach( $contributors as $contributor => $repositories ) {
+            $this->setPullRequests( $contributor, $repositories );
+        }
     }
 
     /**
@@ -63,11 +104,4 @@ class FeatureContext implements Context, SnippetAcceptingContext
 
     }
 
-    /**
-     * @Given /^github contributors have pull requests to:$/
-     */
-    public function githubContributorsHavePullRequestsTo( TableNode $table )
-    {
-        
-    }
 }
