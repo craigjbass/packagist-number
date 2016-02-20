@@ -3,6 +3,7 @@
 ## Requirements
 
 * PHP 7
+* http://php.net/manual/en/features.commandline.webserver.php support in PHP install
 
 ## Task list
 - [x] Walking skeleton with edge-to-edge testing
