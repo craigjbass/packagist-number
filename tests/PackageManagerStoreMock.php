@@ -25,9 +25,9 @@ class PackageManagerStoreMock implements PackageManagerStore
         return [ ];
     }
 
-    public function addPackage( $string )
+    public function addPackage( $repositoryName, $packagistName = null )
     {
-        $this->packages[$string] = [ true ];
+        $this->packages[$repositoryName] = [ $packagistName ?: $repositoryName ];
     }
 
 

@@ -112,6 +112,39 @@ class PackagistNumberCalculatorTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
+    public function GivenContributorsAreLinkedByOneRepository_AndIsAValidPackage_ThenExpectOneLinkWithCorrectData()
+    {
+        $this->packages->addPackage( 'org1/test' );
+
+        $this->codeStore->addUserRepo( 'user1', 'org1/test' );
+        $this->codeStore->addUserRepo( 'user2', 'org1/test' );
+
+        $response = $this->execute( 'user1', 'user2' );
+
+        $this->assertEquals( 'org1/test', $response->getLinks()[0]->getPackageName() );
+    }
+
+    /**
+     * @test
+     */
+    public function GivenContributorsAreLinkedByOneRepository_AndIsAValidPackageWithDifferentNameToRepo_ThenExpectOneLinkWithCorrectData()
+    {
+        $this->packages->addPackage( 'org1/test', 'org102/test' );
+
+        $this->codeStore->addUserRepo( 'user1', 'org1/test' );
+        $this->codeStore->addUserRepo( 'user2', 'org1/test' );
+
+        $response = $this->execute( 'user1', 'user2' );
+
+        $this->assertEquals( 'org102/test', $response->getLinks()[0]->getPackageName() );
+        $this->assertEquals( 'user1', $response->getLinks()[0]->getStartContributor() );
+        $this->assertEquals( 'user2', $response->getLinks()[0]->getEndContributor() );
+    }
+
+
+    /**
+     * @test
+     */
     public function GivenContributorsAreNotLinkedByOneRepository_AndIsAValidPackage_ThenExpectNoRelationshipFoundError()
     {
         $this->packages->addPackage( 'org1/test' );
@@ -138,6 +171,7 @@ class PackagistNumberCalculatorTest extends \PHPUnit_Framework_TestCase
         $this->assertNoRelationshipFoundError( $response );
         $this->assertPackagistNumberIsNull( $response );
     }
+
 
 
 }

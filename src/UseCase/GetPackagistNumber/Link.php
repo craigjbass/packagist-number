@@ -11,5 +11,9 @@ namespace Craigjbass\PackagistNumber\UseCase\GetPackagistNumber;
 
 interface Link
 {
+    public function getPackageName(): string;
 
+    public function getStartContributor(): string;
+
+    public function getEndContributor(): string;
 }
