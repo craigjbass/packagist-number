@@ -10,9 +10,16 @@ use Craigjbass\PackagistNumber\UseCase\GetPackagistNumber\Response;
 
 class PackagistNumberCalculator implements UseCase\GetPackagistNumber
 {
+
+    /** @var Link[] */
     private $links = [ ];
-    private $null = null;
+
+    /** @var int */
+    private $packagistNumber = null;
+
+    /** @var Repository[] */
     private $repositoriesContributedTo;
+
     /** @var SocialCodeStore */
     private $socialCodeStore;
 
@@ -56,7 +63,7 @@ class PackagistNumberCalculator implements UseCase\GetPackagistNumber
      */
     private function getResponse()
     {
-        return new GetPackagistNumber\Response( $this->null, $this->links );
+        return new GetPackagistNumber\Response( $this->packagistNumber, $this->links );
     }
 
     /**
@@ -80,8 +87,8 @@ class PackagistNumberCalculator implements UseCase\GetPackagistNumber
 
             $isIntersectingInteraction = in_array( $endingContributor, $contributors, true );
             if ( $isIntersectingInteraction ) {
-                $this->null    = 1;
-                $this->links[] = new Link( $results[0], $startingContributor, $endingContributor );
+                $this->packagistNumber = 1;
+                $this->links[]         = new Link( $results[0], $startingContributor, $endingContributor );
             }
         }
     }
