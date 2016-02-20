@@ -10,6 +10,9 @@ use Craigjbass\PackagistNumber\UseCase\GetPackagistNumber\Response;
 
 class PackagistNumberCalculator implements UseCase\GetPackagistNumber
 {
+    private $links = [ ];
+    private $null = null;
+    private $repositoriesContributedTo;
     /** @var SocialCodeStore */
     private $socialCodeStore;
 
@@ -24,27 +27,62 @@ class PackagistNumberCalculator implements UseCase\GetPackagistNumber
 
     public function execute( Request $request ): Response
     {
-        $startingContributor = $request->getStartingContributor();
-        $endingContributor   = $request->getEndingContributor();
-        $repositories        = $this->socialCodeStore->getRepositoriesContributedTo( $startingContributor );
+        $startingContributor             = $request->getStartingContributor();
+        $endingContributor               = $request->getEndingContributor();
+        $this->repositoriesContributedTo = $this->socialCodeStore->getRepositoriesContributedTo( $startingContributor );
 
-        $links           = [ ];
-        $packagistNumber = null;
-        if ( count( $repositories ) ) {
-            $repository = $repositories[0];
+        $hasContributions = count( $this->repositoriesContributedTo );
 
-            $results = $this->packageManagerStore->search( $repository->getName() );
-            if ( $results ) {
-                $contributors = $this->socialCodeStore->getContributors( $repository->getName() );
-
-
-                if ( in_array( $endingContributor, $contributors, true ) ) {
-                    $packagistNumber = 1;
-                    $links[]         = new Link( $results[0], $startingContributor, $endingContributor );
-                }
-            }
+        if ( !$hasContributions ) {
+            return $this->getResponse();
         }
 
-        return new GetPackagistNumber\Response( $packagistNumber, $links );
+        $this->calculateSocialConnection( $endingContributor, $startingContributor );
+
+        return $this->getResponse();
+    }
+
+    /**
+     * @param Repository $repository
+     * @return array
+     */
+    private function searchForPackage( Repository $repository )
+    {
+        return $this->packageManagerStore->search( $repository->getName() );
+    }
+
+    /**
+     * @return GetPackagistNumber\Response
+     */
+    private function getResponse()
+    {
+        return new GetPackagistNumber\Response( $this->null, $this->links );
+    }
+
+    /**
+     * @return mixed
+     */
+    private function getFirstSearchResult()
+    {
+        return $this->repositoriesContributedTo[0];
+    }
+
+    /**
+     * @param $endingContributor
+     * @param $startingContributor
+     */
+    private function calculateSocialConnection( $endingContributor, $startingContributor )
+    {
+        $repository = $this->getFirstSearchResult();
+        $results    = $this->searchForPackage( $repository );
+        if ( !empty($results) ) {
+            $contributors = $this->socialCodeStore->getContributors( $repository->getName() );
+
+            $isIntersectingInteraction = in_array( $endingContributor, $contributors, true );
+            if ( $isIntersectingInteraction ) {
+                $this->null    = 1;
+                $this->links[] = new Link( $results[0], $startingContributor, $endingContributor );
+            }
+        }
     }
 }
