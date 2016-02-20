@@ -14,7 +14,7 @@ vendor/bin/behat
 
 ### PHPUnit
 ```bash
-vendor/bin/phpunit
+vendor/bin/phpunit ./tests
 ```
 
 ## Task list
