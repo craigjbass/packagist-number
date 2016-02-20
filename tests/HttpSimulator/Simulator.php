@@ -52,7 +52,7 @@ trait Simulator
 
     private function endSimulator()
     {
-        proc_close( $this->simulator );
+        proc_terminate( $this->simulator );
     }
 
 }
