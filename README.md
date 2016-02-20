@@ -5,6 +5,8 @@
 * PHP 7
 * http://php.net/manual/en/features.commandline.webserver.php support in PHP install
 
+Tested on Mac OSX using brew/php/php70 and Ubuntu
+
 ## Running
 
 ### Behat
