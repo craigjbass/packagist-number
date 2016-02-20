@@ -10,6 +10,7 @@ namespace Craigjbass\PackagistNumber;
 
 
 use Craigjbass\PackagistNumber\Gateway\GitHub;
+use Craigjbass\PackagistNumber\Gateway\Packagist;
 use DI\ContainerBuilder;
 use function DI\object;
 
@@ -30,6 +31,7 @@ class Injector
         return [
             UseCase\GetPackagistNumber::class => object( PackagistNumberCalculator::class ),
             Gateway\SocialCodeStore::class => object( GitHub::class ),
+            Gateway\PackageManagerStore::class => object( Packagist::class ),
         ];
     }
 

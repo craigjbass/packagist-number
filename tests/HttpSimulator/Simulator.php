@@ -15,6 +15,18 @@ trait Simulator
     /** @var resource */
     private $simulator;
 
+    protected function setUp()
+    {
+        parent::setUp();
+        $this->startSimulator();
+    }
+
+    protected function tearDown()
+    {
+        parent::tearDown();
+        $this->endSimulator();
+    }
+
     private function startSimulator()
     {
         $path = __DIR__. '/../../simulator/responses';

@@ -10,6 +10,9 @@ switch ( true ) {
     case preg_match( '~search/issues\?q=type:pr\+state:closed\+author:(.*?)&per_page=(.*?)&page=(.*)~', $uri, $matches ):
         echo file_get_contents( __DIR__ . "/responses/search/issues/{$matches[1]}/{$matches[3]}/response.json" );
         break;
+    case preg_match( '~search.json\?q=(.*)~', $uri, $matches ):
+        echo file_get_contents( __DIR__ . "/responses/search.json/{$matches[1]}/response.json" );
+        break;
     default:
         return;
 }

@@ -26,18 +26,6 @@ class GitHubTest extends \PHPUnit_Framework_TestCase
         return new GitHub( 'http://localhost:47281/' );
     }
 
-    protected function setUp()
-    {
-        parent::setUp();
-        $this->startSimulator();
-    }
-
-    protected function tearDown()
-    {
-        parent::tearDown();
-        $this->endSimulator();
-    }
-
     /**
      * @test
      */

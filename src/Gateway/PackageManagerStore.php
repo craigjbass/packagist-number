@@ -9,5 +9,5 @@ namespace Craigjbass\PackagistNumber\Gateway;
 
 interface PackageManagerStore
 {
-    public function search( $repositoryName );
+    public function search( $repositoryName ): array;
 }

@@ -9,6 +9,8 @@
 namespace Craigjbass\PackagistNumber\GetPackagistNumber;
 
 
+use Craigjbass\PackagistNumber\UseCase\GetPackagistNumber\Link;
+
 class Response implements \Craigjbass\PackagistNumber\UseCase\GetPackagistNumber\Response
 {
     /**

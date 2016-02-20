@@ -16,7 +16,7 @@ class PackageManagerStoreMock implements PackageManagerStore
 
     private $packages = [ ];
 
-    public function search( $repositoryName )
+    public function search( $repositoryName ) : array
     {
         if ( isset($this->packages[$repositoryName]) ) {
             return $this->packages[$repositoryName];
@@ -27,7 +27,7 @@ class PackageManagerStoreMock implements PackageManagerStore
 
     public function addPackage( $string )
     {
-        $this->packages[$string] = true;
+        $this->packages[$string] = [ true ];
     }
 
 
