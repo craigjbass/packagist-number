@@ -1,6 +1,8 @@
 <?php
 namespace Craigjbass\PackagistNumber\Gateway;
 
+use Craigjbass\PackagistNumber\Repository;
+
 class GitHub implements SocialCodeStore
 {
     /** @var string */
@@ -17,7 +19,17 @@ class GitHub implements SocialCodeStore
      */
     public function getRepositoriesContributedTo( string $contributor ): array
     {
+        $json = file_get_contents( "{$this->apiUrl}search/issues?q=type:pr+state:closed+author:{$contributor}&per_page=100&page=1" );
+        $response = json_decode( $json, true );
 
+        $repositories = [];
+        foreach( $response['items'] as $item ) {
+            $repositoryUrl  = $item['repository_url'];
+            $repositoryName = str_replace( 'https://api.github.com/repos/', '', $repositoryUrl );
+            $repositories[$repositoryName] = new Repository( $repositoryName );
+        }
+
+        return array_values( $repositories );
     }
 
     /**

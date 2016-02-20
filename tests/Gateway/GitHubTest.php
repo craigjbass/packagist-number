@@ -26,33 +26,39 @@ class GitHubTest extends \PHPUnit_Framework_TestCase
         return new GitHub( 'http://localhost:47281/' );
     }
 
-    /**
-     * @test
-     */
-    public function GivenRepositoryDoesNotExist_WhenGetContributors_ThenReturnEmptyArray()
+    protected function setUp()
     {
+        parent::setUp();
         $this->startSimulator();
-        $github       = $this->getGithubGateway();
-        $contributors = $github->getContributors( 'not-found/nothing-to-see-here' );
-        $this->assertEquals( [ ], $contributors );
+    }
+
+    protected function tearDown()
+    {
+        parent::tearDown();
         $this->endSimulator();
     }
 
     /**
      * @test
      */
-    public function GivenRepositoryTestTest_AndHasOneContributorCoder_WhenGetContributors_ThenExpectCoderToBeReturned(
-    )
+    public function GivenRepositoryDoesNotExist_WhenGetContributors_ThenReturnEmptyArray()
     {
-        $this->startSimulator();
+        $github       = $this->getGithubGateway();
+        $contributors = $github->getContributors( 'not-found/nothing-to-see-here' );
+        $this->assertEquals( [ ], $contributors );
+    }
+
+    /**
+     * @test
+     */
+    public function GivenRepositoryTestTest_AndHasOneContributorCoder_WhenGetContributors_ThenExpectCoderToBeReturned()
+    {
         $this->setContributors( "test/test", [ "Coder" ] );
 
         $github = $this->getGithubGateway();
 
         $contributors = $github->getContributors( 'test/test' );
         $this->assertEquals( [ 'Coder' ], $contributors );
-
-        $this->endSimulator();
     }
 
     /**
@@ -61,36 +67,84 @@ class GitHubTest extends \PHPUnit_Framework_TestCase
     public function GivenRepositoryTestTest_AndHasThreeContributorsCoder1_Coder2_Coder3_WhenGetContributors_ThenExpectThreeCodersToBeReturned(
     )
     {
-        $this->startSimulator();
         $this->setContributors( "test/test", [ "Coder1", "Coder2", "Coder3" ] );
 
         $github = $this->getGithubGateway();
 
         $contributors = $github->getContributors( 'test/test' );
         $this->assertEquals( [ 'Coder1', 'Coder2', 'Coder3' ], $contributors );
-
-        $this->endSimulator();
     }
 
     /**
      * @test
      */
-    public function GivenRepositoryOrgRepo_AndHasContributorCraigjbass_WhenGetContributors_ThenExpectThreeCraigjbassToBeReturned(
+    public function GivenRepositoryOrgRepo_AndHasContributorCraigjbass_WhenGetContributors_ThenExpectOneCraigjbassToBeReturned(
     )
     {
-        $this->startSimulator();
         $this->setContributors( "org/repo", [ "craigjbass" ] );
 
         $github = $this->getGithubGateway();
 
         $contributors = $github->getContributors( 'org/repo' );
         $this->assertEquals( [ 'craigjbass' ], $contributors );
-
-        $this->endSimulator();
     }
 
+    /**
+     * @test
+     */
+    public function GivenUserCoder_AndHasNoPullRequests_WhenGetRepositoriesContributedTo_ThenExpectNoRepositoriesToBeReturned(
+    )
+    {
+        $this->setPullRequests( "Coder", [] );
 
+        $github = $this->getGithubGateway();
 
+        $repositories = $github->getRepositoriesContributedTo( "Coder" );
+        $this->assertEquals( [], $repositories );
+    }
 
+    /**
+     * @test
+     */
+    public function GivenUserCoder_AndHasOnePullRequest_WhenGetRepositoriesContributedTo_ThenExpectOneRepositoryToBeReturned(
+    )
+    {
+        $this->setPullRequests( "Coder", [ 'org/repo1' ] );
+
+        $github = $this->getGithubGateway();
+
+        $repositories = $github->getRepositoriesContributedTo( "Coder" );
+        $this->assertEquals( 'org/repo1', $repositories[0]->getName() );
+    }
+
+    /**
+     * @test
+     */
+    public function GivenUserCoder_AndHasTwoPullRequestsToDifferentRepos_WhenGetRepositoriesContributedTo_ThenExpectTwoRepositoriesToBeReturned(
+    )
+    {
+        $this->setPullRequests( "Coder", [ 'org/repo1', 'org/repo2' ] );
+
+        $github = $this->getGithubGateway();
+
+        $repositories = $github->getRepositoriesContributedTo( "Coder" );
+        $this->assertEquals( 'org/repo1', $repositories[0]->getName() );
+        $this->assertEquals( 'org/repo2', $repositories[1]->getName() );
+    }
+
+    /**
+     * @test
+     */
+    public function GivenUserCoder_AndHasTwoPullRequestsToOrgRepo_WhenGetRepositoriesContributedTo_ThenExpectOneRepositoryToBeReturned(
+    )
+    {
+        $this->setPullRequests( "Coder", [ 'org/repo', 'org/repo' ] );
+
+        $github = $this->getGithubGateway();
+
+        $repositories = $github->getRepositoriesContributedTo( "Coder" );
+        $this->assertCount( 1, $repositories );
+        $this->assertEquals( 'org/repo', $repositories[0]->getName() );
+    }
 
 }

@@ -19,6 +19,10 @@ trait Simulator
     {
         $path = __DIR__. '/../../simulator/responses';
         `rm -Rf $path`;
+
+        $path = __DIR__. '/../../simulator/requests';
+        `rm -Rf $path`;
+
         $script           = __DIR__ . '/../../simulator/http-simulator.php';
         $simulatorCommand = "php -S localhost:47281 {$script}";
         $process          = proc_open(
